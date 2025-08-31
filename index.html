@@ -7,7 +7,7 @@
     <title>Login Sorteio - Qualidade</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
-    <link rel="stylesheet" href="css/login.css" />
+    <link rel="stylesheet" href="css/login.css">
 </head>
 
 <body class="login">
@@ -19,7 +19,7 @@
             <div class="card-body">
                 <p class="login-msg text-center">Informe suas credenciais abaixo</p>
 
-                <form id="formLoginQld">
+                <form id="formLoginQld" method="POST">
                     <div class="input-group mb-3">
                         <input required class="form-control" type="text" placeholder="Usuário" id="user">
                         <div class="input-append">
@@ -36,9 +36,10 @@
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary float-end">
-                        <i class="bi bi-box-arrow-in-right"></i>
-                        Entrar
+                    <button id="btnLogin" type="submit" class="btn btn-primary float-end">
+                        <i class="ent-icon bi bi-box-arrow-in-right"></i>
+                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                        <span class="btn-txt">Entrar</span>
                     </button>
                 </form>
             </div>
@@ -46,6 +47,7 @@
         <p class="mt-5 mb-3 text-muted text-center">&copy; Semana da Qualidade 2025</p>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/frames.js"></script>
     <script src="js/login.js"></script>
 </body>
 

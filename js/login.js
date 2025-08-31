@@ -9,37 +9,43 @@ document.getElementById("formLoginQld").addEventListener("submit", async functio
         return;
     }
 
-    try {
-        const req = await fetch("https://testes.epquixeramobim.com.br/proc_login.php", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            credentials: "include",
-            body: JSON.stringify({ usuario, senha })
-        });
-        const resultado = await req.json();
+    const btn = document.querySelector("#btnLogin");
+    const txtBtn = document.querySelector(".btn-txt");
+    const iconAt = document.querySelector(".ent-icon");
+    const spin = document.querySelector(".spinner-border");
+    iconAt.classList.add("d-none");
+    btn.disabled = true;
+    txtBtn.innerText = "";
+    spin.classList.remove("d-none");
 
-        if (req.ok && resultado.ok) {
-            window.location.href = "home.html";
+    try {
+        const req = await fetch("proc_login.php", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ usuario,senha })
+        });
+        
+        const text = await req.text();
+        let json;
+        
+        try {
+            json = JSON.parse(text);
+        } catch {
+            throw new Error("Resposta inesperada do servidor:\n" + text);
+        }
+
+        if (req.ok && json.ok) {
+            window.location.href = "home.php";
         } else {
-            msg = resultado.mensagem || "Erro desconhecido. Falar com o admin do sistema!";
+            msg = json.mensagem || "Erro desconhecido. Falar com o admin do sistema!";
             showErro(msg);
         }
     } catch (erro) {
-        showErro("Erro: " + erro)
+        showErro("Erro de rede: " + erro)
+    } finally {
+        btn.disabled = false;
+        txtBtn.innerText = "Entrar";
+        spin.classList.add("d-none");
+        iconAt.classList.remove("d-none");
     }
 });
-
-// função que mostra a msg de erro em forma de toast no canto superior direito da tela
-function showErro(msg) {
-    const TOAST = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        timerProgressBar: true,
-        showConfirmButton: false,
-        timer: 3000
-    });
-
-    TOAST.fire({ icon: 'error', text: msg });
-}
