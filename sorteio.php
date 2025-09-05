@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/Fortaleza');
 require_once('inclusoes/verif_sessao.php');
 require_once('inclusoes/layout.php');
 require_once('database/Connection.php');
@@ -47,27 +48,36 @@ $sorteios = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <tbody>
                                 <?php $k = 1;
                                 foreach ($sorteios as $s): ?>
+
+                                    <?php
+                                    $agora = time();
+                                    $fim = strtotime($s['dia'] . ' ' . $s['hora_fim']);
+
+                                    // verifica se o sorteio está ativo ou não
+                                    $encerrado = $agora > $fim;
+                                    ?>
+
                                     <tr>
                                         <td><?= $k++ ?></td>
                                         <td><?= date("d/m/Y", strtotime($s['dia'])) ?></td>
                                         <td><?= substr($s['hora_inicio'], 0, 5) ?></td>
                                         <td><?= substr($s['hora_fim'], 0, 5) ?></td>
                                         <td>
-                                            <?php if($_SESSION['tipo_user']=='QUALIDADE'): ?>
-                                            <button class="btn btn-sm btn-warning shadow edit-sorteio"
-                                                data-id="<?= $s['id'] ?>"
-                                                data-dia="<?= $s['dia'] ?>"
-                                                data-inicio="<?= substr($s['hora_inicio'], 0, 5) ?>"
-                                                data-fim="<?= substr($s['hora_fim'], 0, 5) ?>">
-                                                <i class="bi bi-pencil"></i>
-                                                Editar
-                                            </button>
-                                            <button class="btn btn-sm btn-danger shadow deleta-sorteio"
-                                                data-id="<?= $s['id'] ?>"
-                                                data-dia="<?= $s['dia'] ?>">
-                                                <i class="bi bi-trash"></i>
-                                                Excluir
-                                            </button>
+                                            <?php if ($_SESSION['tipo_user'] == 'QUALIDADE'): ?>
+                                                <button class="btn btn-sm btn-warning shadow edit-sorteio"
+                                                    data-id="<?= $s['id'] ?>"
+                                                    data-dia="<?= $s['dia'] ?>"
+                                                    data-inicio="<?= substr($s['hora_inicio'], 0, 5) ?>"
+                                                    data-fim="<?= substr($s['hora_fim'], 0, 5) ?>">
+                                                    <i class="bi bi-pencil"></i>
+                                                    Editar
+                                                </button>
+                                                <button class="btn btn-sm btn-danger shadow deleta-sorteio"
+                                                    data-id="<?= $s['id'] ?>"
+                                                    data-dia="<?= $s['dia'] ?>">
+                                                    <i class="bi bi-trash"></i>
+                                                    Excluir
+                                                </button>
                                             <?php endif; ?>
                                             <a href="registro_particip.php?id=<?= $s['id'] ?>">
                                                 <button class="btn btn-sm btn-primary shadow">
@@ -75,6 +85,18 @@ $sorteios = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                     Ver registros
                                                 </button>
                                             </a>
+                                            <!-- Botão da página de sorteio -->
+                                            <?php if ($_SESSION['tipo_user'] == 'QUALIDADE'): ?>
+                                                <a href="<?php if (!$encerrado): ?> javascript:void(0); <?php else: ?>
+                                                    realiza_sorteio.php?id=<?= $s['id'] ?> 
+                                                    <?php endif; ?>">
+                                                    <button class="btn btn-sm btn-success shadow"
+                                                        <?= !$encerrado ? 'disabled' : '' ?>>
+                                                        <i class="bi bi-trophy-fill"></i>
+                                                        Sortear
+                                                    </button>
+                                                </a>
+                                            <?php endif; ?>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>

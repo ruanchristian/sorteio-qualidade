@@ -1,5 +1,6 @@
 <?php
-require('inclusoes/verif_sessao.php');
+require_once('inclusoes/verif_sessao.php');
+require_once('inclusoes/layout.php');
 require_once('database/Connection.php');
 
 $id = $_GET['id'] ?? null;
@@ -20,9 +21,6 @@ if (!$sorteio) {
     echo "<script>window.location.href='sorteio.php'</script>";
     exit;
 }
-
-// carrega o layout base somente se tiver passado pelas validações
-require_once('inclusoes/layout.php');
 
 // busca os participantes no banco pelo id do sorteio
 $stmt = $pdo->prepare("

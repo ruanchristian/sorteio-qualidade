@@ -77,7 +77,7 @@ $atual = basename($_SERVER['PHP_SELF']);
         <a href="participantes.php" class="list-group-item list-group-item-action py-2 ripple <?= $atual == 'participantes.php' ? 'active' : '' ?>">
           <i class="bi bi-person-arms-up me-3"></i><span>Add participantes</span>
         </a>
-        <a href="sorteio.php" class="list-group-item list-group-item-action py-2 ripple <?= $atual == 'sorteio.php' || $atual=='registro_particip.php' ? 'active' : '' ?>">
+        <a href="sorteio.php" class="list-group-item list-group-item-action py-2 ripple <?= $atual == 'sorteio.php' || $atual=='registro_particip.php' || $atual=='realiza_sorteio.php' ? 'active' : '' ?>">
           <i class="bi bi-ticket-detailed me-3"></i><span>Sorteios</span>
         </a>
         <a href="usuarios.php" class="list-group-item list-group-item-action py-2 ripple <?= $atual == 'usuarios.php' ? 'active' : '' ?>">
@@ -94,7 +94,7 @@ $atual = basename($_SERVER['PHP_SELF']);
       </button>
 
       <a class="navbar-brand" href="#">
-        <img src="https://portalrh.cocalqui.com.br/portalrh/Contents/images/E1001_U1001.jpg"
+        <img src="https://portalrh.cocalqui.com.br/portalrh/Contents/images/default/masterpage/logo.png"
           title="Logo III Semana da Qualidade"
           height="35" width="130" alt="Logo da Semana da Qualidade 2025" loading="lazy" />
       </a>

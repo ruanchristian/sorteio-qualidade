@@ -1,12 +1,11 @@
 <?php
 session_start();
-date_default_timezone_set("America/Fortaleza");
+date_default_timezone_set('America/Fortaleza');
 require_once('database/Connection.php');
 
-$d = $_POST;
-$matricula = trim($d['matricula'] ?? '');
-$empresa = $d['empresa'] ?? '';
-$sorteio_id = $d['sorteio_id'] ?? '';
+$matricula = trim($_POST['matricula'] ?? '');
+$empresa = $_POST['empresa'] ?? '';
+$sorteio_id = $_POST['sorteio_id'] ?? '';
 $autor = $_SESSION['user_id'];
 
 if (!$matricula || !$empresa || !$sorteio_id) {
@@ -15,9 +14,9 @@ if (!$matricula || !$empresa || !$sorteio_id) {
 }
 
 try {
-    $pdo = Connection::getPdo();
+    $pdo = Connection::getPdo(); // conexão com o banco de dados
 
-    // busca sorteio
+    // busca sorteio pelo id
     $stmt = $pdo->prepare("SELECT * FROM sorteio WHERE id = ?");
     $stmt->execute([$sorteio_id]);
     $sorteio = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -43,8 +42,14 @@ try {
 
     // concatena empresa+matrícula
     $mat;
-    if($empresa == "COCALQUI") $mat="COC".$matricula;
-    else if($empresa == "ANIGER") $mat="ACE".$matricula;
+    if ($empresa == "COCALQUI") {
+        $mat="COC".$matricula;
+    } else if ($empresa == "ANIGER") {
+        $mat="ACE".$matricula;
+    } else {
+        echo json_encode(["ok" => false, "msg" => "O campo 'empresa' precisa ser ANIGER ou COCALQUI."]);
+        exit;
+    }
 
     // verifica se matrícula já é cadastrada no sorteio
     $stmt = $pdo->prepare("SELECT COUNT(*) FROM participantes WHERE matricula = ? AND sorteio_id = ?");
